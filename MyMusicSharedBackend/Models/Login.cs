@@ -1,49 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyMusicSharedBackend.Models
 {
     /// <summary>
-    /// User Data
+    /// Class to login
     /// </summary>
-    public class User
+    public class Login
     {
         /// <summary>
-        /// User Identifier
+        /// User name
         /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
-        /// Email of the user
-        /// </summary>
-        [Required]
-        public string Email { get; set; }
-
-        /// <summary>
-        /// Username for login
-        /// </summary>
-        [Required]
         public string Username { get; set; }
 
         /// <summary>
-        /// Password for login
+        /// Password of the user
         /// </summary>
-        [Required]
         public string Password { get; set; }
 
         /// <summary>
-        /// Full Name
+        /// Scopes to authenticate
         /// </summary>
-        public string FullName { get; set; }
-
-        /// <summary>
-        /// Bio of the user
-        /// </summary>
-        [MaxLength(100)]
-        public string Bio { get; set; }
+        public IEnumerable<string> Scopes { get; set; }
 
         /// <summary>
         /// ToString of the class

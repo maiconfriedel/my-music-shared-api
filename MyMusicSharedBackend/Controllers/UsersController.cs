@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Security.Policy;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MyMusicSharedBackend.Database;
 using MyMusicSharedBackend.Models;
-using MyMusicSharedBackend.Models.Password;
 
 namespace MyMusicSharedBackend.Controllers
 {
@@ -37,6 +36,7 @@ namespace MyMusicSharedBackend.Controllers
         /// </summary>
         /// <returns>List of all users</returns>
         [HttpGet]
+        [Authorize(policy: "read")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
@@ -48,6 +48,7 @@ namespace MyMusicSharedBackend.Controllers
         /// <param name="id">User identifier</param>
         /// <returns>Details of an user</returns>
         [HttpGet("{id}")]
+        [Authorize(policy: "read")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -66,10 +67,11 @@ namespace MyMusicSharedBackend.Controllers
         /// <param name="user">User data</param>
         /// <returns>The created user</returns>
         [HttpPost]
+        //[Authorize(policy: "write")]
         public async Task<ActionResult<User>> PostUser(User user)
         {
             string salt = _configuration.GetSection("Security").GetSection("PasswordHashSalt").Value;
-            user.Password = Models.Password.Hash.Create(user.Password, salt);
+            user.Password = Models.Password.Hash.Create(user.ToString(), salt);
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();

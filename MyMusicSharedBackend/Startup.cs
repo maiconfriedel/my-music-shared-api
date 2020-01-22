@@ -1,12 +1,17 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MyMusicSharedBackend.Services;
 
 namespace MyMusicSharedBackend
 {
@@ -59,7 +64,40 @@ namespace MyMusicSharedBackend
                 c.IncludeXmlComments(xmlPath);
             });
 
+            //Registrar as politicas de acesso
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("read",
+                    policy => policy.Requirements.Add(new HasScopeRequirement("read", "MyMusicShared")));
+
+                options.AddPolicy("write",
+                    policy => policy.Requirements.Add(new HasScopeRequirement("write", "MyMusicShared")));
+            });
+
+            // register the scope authorization handler
+            services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+
+            var key = Encoding.ASCII.GetBytes(Configuration.GetSection("Security").GetSection("JWTSecurityKey").Value);
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
             services.AddDbContext<Database.MyMusicSharedDbContext>();
+            services.AddSingleton<TokenService>();
         }
 
         /// <summary>
@@ -84,6 +122,8 @@ namespace MyMusicSharedBackend
             });
 
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseAuthorization();
 

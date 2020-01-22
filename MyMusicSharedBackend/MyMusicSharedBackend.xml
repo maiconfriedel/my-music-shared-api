@@ -4,6 +4,26 @@
         <name>MyMusicSharedBackend</name>
     </assembly>
     <members>
+        <member name="T:MyMusicSharedBackend.Controllers.LoginController">
+            <summary>
+            Controller for login
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Controllers.LoginController.#ctor(MyMusicSharedBackend.Database.MyMusicSharedDbContext,MyMusicSharedBackend.Services.TokenService,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Constructor of the class
+            </summary>
+            <param name="context">Db Context</param>
+            <param name="tokenService">Token service</param>
+            <param name="configuration">Configuration properties</param>
+        </member>
+        <member name="M:MyMusicSharedBackend.Controllers.LoginController.Login(MyMusicSharedBackend.Models.Login)">
+            <summary>
+            Logins to the application
+            </summary>
+            <param name="login">Login Data</param>
+            <returns>JWT Token</returns>
+        </member>
         <member name="T:MyMusicSharedBackend.Controllers.UsersController">
             <summary>
             Users Controller
@@ -58,6 +78,32 @@
             </summary>
             <param name="modelBuilder">Model builder</param>
         </member>
+        <member name="T:MyMusicSharedBackend.Models.Login">
+            <summary>
+            Class to login
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Models.Login.Username">
+            <summary>
+            User name
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Models.Login.Password">
+            <summary>
+            Password of the user
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Models.Login.Scopes">
+            <summary>
+            Scopes to authenticate
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Models.Login.ToString">
+            <summary>
+            ToString of the class
+            </summary>
+            <returns>String</returns>
+        </member>
         <member name="T:MyMusicSharedBackend.Models.Password.Hash">
             <summary>
             Hash the password
@@ -79,17 +125,6 @@
             <param name="salt">Salt to validate</param>
             <param name="hash">Hashed value</param>
             <returns>True or false</returns>
-        </member>
-        <member name="T:MyMusicSharedBackend.Models.Password.Salt">
-            <summary>
-            Salt to validate the Hash
-            </summary>
-        </member>
-        <member name="M:MyMusicSharedBackend.Models.Password.Salt.Create">
-            <summary>
-            Creates a new Salt
-            </summary>
-            <returns>Salt value</returns>
         </member>
         <member name="T:MyMusicSharedBackend.Models.User">
             <summary>
@@ -126,6 +161,12 @@
             Bio of the user
             </summary>
         </member>
+        <member name="M:MyMusicSharedBackend.Models.User.ToString">
+            <summary>
+            ToString of the class
+            </summary>
+            <returns>String</returns>
+        </member>
         <member name="T:MyMusicSharedBackend.Program">
             <summary>
             Class that contains the main method of the program
@@ -143,6 +184,25 @@
             </summary>
             <param name="args">Arguments</param>
             <returns>Host Builder</returns>
+        </member>
+        <member name="T:MyMusicSharedBackend.Services.TokenService">
+            <summary>
+            Token methods
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Services.TokenService.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Constructor of the class
+            </summary>
+            <param name="configuration">Configuration properties</param>
+        </member>
+        <member name="M:MyMusicSharedBackend.Services.TokenService.GenerateToken(MyMusicSharedBackend.Models.User,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Generates a token
+            </summary>
+            <param name="user">User data</param>
+            <param name="scopes">Scopes for the token</param>
+            <returns>JWT Token</returns>
         </member>
         <member name="T:MyMusicSharedBackend.Startup">
             <summary>
