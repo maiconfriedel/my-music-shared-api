@@ -9,11 +9,12 @@
             Users Controller
             </summary>
         </member>
-        <member name="M:MyMusicSharedBackend.Controllers.UsersController.#ctor(MyMusicSharedBackend.Database.MyMusicSharedDbContext)">
+        <member name="M:MyMusicSharedBackend.Controllers.UsersController.#ctor(MyMusicSharedBackend.Database.MyMusicSharedDbContext,Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             Constructor of the class
             </summary>
             <param name="context">Db Context</param>
+            <param name="configuration">Configuration file</param>
         </member>
         <member name="M:MyMusicSharedBackend.Controllers.UsersController.GetUsers">
             <summary>
@@ -35,6 +36,61 @@
             <param name="user">User data</param>
             <returns>The created user</returns>
         </member>
+        <member name="T:MyMusicSharedBackend.Database.MyMusicSharedDbContext">
+            <summary>
+            Db Context for Database Access
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Database.MyMusicSharedDbContext.Users">
+            <summary>
+            Users DbSet
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Database.MyMusicSharedDbContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)">
+            <summary>
+            Method called on configuring the Db Context
+            </summary>
+            <param name="optionsBuilder">Options</param>
+        </member>
+        <member name="M:MyMusicSharedBackend.Database.MyMusicSharedDbContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <summary>
+            Method called on creating the models
+            </summary>
+            <param name="modelBuilder">Model builder</param>
+        </member>
+        <member name="T:MyMusicSharedBackend.Models.Password.Hash">
+            <summary>
+            Hash the password
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Models.Password.Hash.Create(System.String,System.String)">
+            <summary>
+            Creates a Hash
+            </summary>
+            <param name="value">The Value to hash</param>
+            <param name="salt">Salt to validade</param>
+            <returns>Hashed Value</returns>
+        </member>
+        <member name="M:MyMusicSharedBackend.Models.Password.Hash.Validate(System.String,System.String,System.String)">
+            <summary>
+            Validats the hash to the value using the salt
+            </summary>
+            <param name="value">Value without hash</param>
+            <param name="salt">Salt to validate</param>
+            <param name="hash">Hashed value</param>
+            <returns>True or false</returns>
+        </member>
+        <member name="T:MyMusicSharedBackend.Models.Password.Salt">
+            <summary>
+            Salt to validate the Hash
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Models.Password.Salt.Create">
+            <summary>
+            Creates a new Salt
+            </summary>
+            <returns>Salt value</returns>
+        </member>
         <member name="T:MyMusicSharedBackend.Models.User">
             <summary>
             User Data
@@ -55,6 +111,11 @@
             Username for login
             </summary>
         </member>
+        <member name="P:MyMusicSharedBackend.Models.User.Password">
+            <summary>
+            Password for login
+            </summary>
+        </member>
         <member name="P:MyMusicSharedBackend.Models.User.FullName">
             <summary>
             Full Name
@@ -64,6 +125,53 @@
             <summary>
             Bio of the user
             </summary>
+        </member>
+        <member name="T:MyMusicSharedBackend.Program">
+            <summary>
+            Class that contains the main method of the program
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Program.Main(System.String[])">
+            <summary>
+            Main method
+            </summary>
+            <param name="args">Arguments for the execution</param>
+        </member>
+        <member name="M:MyMusicSharedBackend.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            Creates the host
+            </summary>
+            <param name="args">Arguments</param>
+            <returns>Host Builder</returns>
+        </member>
+        <member name="T:MyMusicSharedBackend.Startup">
+            <summary>
+            Class for Startup of the application
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Constructor of the class
+            </summary>
+            <param name="configuration">Configuration file Settings</param>
+        </member>
+        <member name="P:MyMusicSharedBackend.Startup.Configuration">
+            <summary>
+            Configuration file Settings
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            </summary>
+            <param name="services">Services to add to the container</param>
+        </member>
+        <member name="M:MyMusicSharedBackend.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app">The App Builder</param>
+            <param name="env">Environment details</param>
         </member>
     </members>
 </doc>

@@ -19,12 +19,20 @@ namespace MyMusicSharedBackend.Models
         /// <summary>
         /// Email of the user
         /// </summary>
+        [Required]
         public string Email { get; set; }
 
         /// <summary>
         /// Username for login
         /// </summary>
+        [Required]
         public string Username { get; set; }
+
+        /// <summary>
+        /// Password for login
+        /// </summary>
+        [Required]
+        public string Password { get; set; }
 
         /// <summary>
         /// Full Name

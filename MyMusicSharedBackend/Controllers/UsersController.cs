@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.Security.Policy;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MyMusicSharedBackend.Database;
 using MyMusicSharedBackend.Models;
+using MyMusicSharedBackend.Models.Password;
 
 namespace MyMusicSharedBackend.Controllers
 {
@@ -19,13 +19,17 @@ namespace MyMusicSharedBackend.Controllers
     {
         private readonly MyMusicSharedDbContext _context;
 
+        private readonly IConfiguration _configuration;
+
         /// <summary>
         /// Constructor of the class
         /// </summary>
         /// <param name="context">Db Context</param>
-        public UsersController(MyMusicSharedDbContext context)
+        /// <param name="configuration">Configuration file</param>
+        public UsersController(MyMusicSharedDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -64,6 +68,9 @@ namespace MyMusicSharedBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
+            string salt = _configuration.GetSection("Security").GetSection("PasswordHashSalt").Value;
+            user.Password = Models.Password.Hash.Create(user.Password, salt);
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
