@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MyMusicSharedBackend</name>
+    </assembly>
+    <members>
+        <member name="T:MyMusicSharedBackend.Controllers.UsersController">
+            <summary>
+            Users Controller
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Controllers.UsersController.#ctor(MyMusicSharedBackend.Database.MyMusicSharedDbContext)">
+            <summary>
+            Constructor of the class
+            </summary>
+            <param name="context">Db Context</param>
+        </member>
+        <member name="M:MyMusicSharedBackend.Controllers.UsersController.GetUsers">
+            <summary>
+            Get all users
+            </summary>
+            <returns>List of all users</returns>
+        </member>
+        <member name="M:MyMusicSharedBackend.Controllers.UsersController.GetUser(System.Int32)">
+            <summary>
+            Get user by Id
+            </summary>
+            <param name="id">User identifier</param>
+            <returns>Details of an user</returns>
+        </member>
+        <member name="M:MyMusicSharedBackend.Controllers.UsersController.PostUser(MyMusicSharedBackend.Models.User)">
+            <summary>
+            Create a user
+            </summary>
+            <param name="user">User data</param>
+            <returns>The created user</returns>
+        </member>
+        <member name="T:MyMusicSharedBackend.Models.User">
+            <summary>
+            User Data
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Models.User.Id">
+            <summary>
+            User Identifier
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Models.User.Email">
+            <summary>
+            Email of the user
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Models.User.Username">
+            <summary>
+            Username for login
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Models.User.FullName">
+            <summary>
+            Full Name
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Models.User.Bio">
+            <summary>
+            Bio of the user
+            </summary>
+        </member>
+    </members>
+</doc>
