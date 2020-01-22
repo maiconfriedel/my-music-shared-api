@@ -18,6 +18,11 @@ namespace MyMusicSharedBackend.Database
         public DbSet<User> Users { get; set; }
 
         /// <summary>
+        /// Refresh tokens
+        /// </summary>
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+
+        /// <summary>
         /// Method called on configuring the Db Context
         /// </summary>
         /// <param name="optionsBuilder">Options</param>

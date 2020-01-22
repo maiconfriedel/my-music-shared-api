@@ -45,6 +45,7 @@ namespace MyMusicSharedBackend.Services
                     new Claim("email", user.Email.ToString()),
                     new Claim("scope", string.Join(" ", scopes))
                 }),
+                NotBefore = DateTime.Now,
                 Expires = DateTime.Now.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Issuer = "MyMusicShared"

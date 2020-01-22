@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -42,25 +43,47 @@ namespace MyMusicSharedBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<object>> Login([FromBody] Login login)
         {
-            string salt = _configuration.GetSection("Security").GetSection("PasswordHashSalt").Value;
-
-            var user = await _context.Users.FirstOrDefaultAsync(a => a.Username == login.Username);
-
-            if (user == null)
+            if (login.RefreshToken != null)
             {
-                return BadRequest(new { error = "Invalid login" });
+                var refreshTokenData = await _context.RefreshTokens.FirstOrDefaultAsync(a => a.RefreshTokenValue == login.RefreshToken);
+
+                var userToken = await _context.Users.FirstOrDefaultAsync(a => a.Username == refreshTokenData.Username);
+
+                var tokenRefreshed = _tokenService.GenerateToken(userToken, refreshTokenData.Scopes.Split(" "));
+
+                string newRefreshToken = Guid.NewGuid().ToString("N");
+
+                _context.RefreshTokens.Add(new RefreshToken { ValidUntil = DateTime.Now.AddDays(1), RefreshTokenValue = newRefreshToken, Username = refreshTokenData.Username, Scopes = refreshTokenData.Scopes });
+                _context.RefreshTokens.Remove(refreshTokenData);
+                await _context.SaveChangesAsync();
+
+                return new { token = tokenRefreshed, refreshToken = newRefreshToken };
             }
-
-            bool passwordMatch = Models.Password.Hash.Validate(login.ToString(), salt, user.Password);
-
-            if (!passwordMatch)
+            else
             {
-                return BadRequest(new { error = "Invalid login" });
+                string salt = _configuration.GetSection("Security").GetSection("PasswordHashSalt").Value;
+                var user = await _context.Users.FirstOrDefaultAsync(a => a.Username == login.Username);
+                if (user == null)
+                {
+                    return BadRequest(new { error = "Invalid login" });
+                }
+
+                bool passwordMatch = Models.Password.Hash.Validate(login.ToString(), salt, user.Password);
+
+                if (!passwordMatch)
+                {
+                    return BadRequest(new { error = "Invalid login" });
+                }
+
+                var token = _tokenService.GenerateToken(user, login.Scopes);
+
+                string refreshToken = Guid.NewGuid().ToString("N");
+
+                _context.RefreshTokens.Add(new RefreshToken { ValidUntil = DateTime.Now.AddDays(1), RefreshTokenValue = refreshToken, Username = login.Username, Scopes = string.Join(" ", login.Scopes) });
+                await _context.SaveChangesAsync();
+
+                return new { token, refreshToken };
             }
-
-            var token = _tokenService.GenerateToken(user, login.Scopes);
-
-            return new { token };
         }
     }
 }

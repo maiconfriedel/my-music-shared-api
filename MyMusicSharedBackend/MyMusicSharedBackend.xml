@@ -66,6 +66,11 @@
             Users DbSet
             </summary>
         </member>
+        <member name="P:MyMusicSharedBackend.Database.MyMusicSharedDbContext.RefreshTokens">
+            <summary>
+            Refresh tokens
+            </summary>
+        </member>
         <member name="M:MyMusicSharedBackend.Database.MyMusicSharedDbContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)">
             <summary>
             Method called on configuring the Db Context
@@ -98,6 +103,11 @@
             Scopes to authenticate
             </summary>
         </member>
+        <member name="P:MyMusicSharedBackend.Models.Login.RefreshToken">
+            <summary>
+            Refresh token to get new Token
+            </summary>
+        </member>
         <member name="M:MyMusicSharedBackend.Models.Login.ToString">
             <summary>
             ToString of the class
@@ -125,6 +135,41 @@
             <param name="salt">Salt to validate</param>
             <param name="hash">Hashed value</param>
             <returns>True or false</returns>
+        </member>
+        <member name="T:MyMusicSharedBackend.Models.RefreshToken">
+            <summary>
+            Refresh Token
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Models.RefreshToken.Id">
+            <summary>
+            Identifier of the refresh token
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Models.RefreshToken.RefreshTokenValue">
+            <summary>
+            Value of the refresh token
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Models.RefreshToken.ValidUntil">
+            <summary>
+            Until when the token is valid
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Models.RefreshToken.Username">
+            <summary>
+            Username of the token
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Models.RefreshToken.Scopes">
+            <summary>
+            Scopes for the token
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Models.RefreshToken.IsValid">
+            <summary>
+            The refresh token stills valid
+            </summary>
         </member>
         <member name="T:MyMusicSharedBackend.Models.User">
             <summary>
