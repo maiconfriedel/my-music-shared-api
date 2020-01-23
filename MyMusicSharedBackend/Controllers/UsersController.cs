@@ -69,10 +69,12 @@ namespace MyMusicSharedBackend.Controllers
         /// <param name="user">User data</param>
         /// <returns>The created user Id</returns>
         [HttpPost]
-        //[Authorize(policy: "write")]
+        [Authorize(policy: "users.read")]
         public async Task<ActionResult<int>> PostUser(User user)
         {
             PostPresenter<int> postPresenter = new PostPresenter<int>();
+
+            var userLoggedIn = User;
 
             _ = await _registerUserUseCase.HandleAsync(new Core.Dto.UseCaseRequests.UseCaseRequest<Core.Dto.UserDto, Core.Dto.UseCaseResponses.UseCaseResponse<int>>(new Core.Dto.UserDto(user.Email, user.Username, user.Password, user.FullName, user.Bio)), postPresenter).ConfigureAwait(false);
 

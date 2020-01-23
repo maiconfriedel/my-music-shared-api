@@ -38,6 +38,7 @@ namespace MyMusicSharedBackend.Infrastructure.EntityFramework
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasIndex(p => p.Email).IsUnique(true);
+            modelBuilder.Entity<User>().HasIndex(p => p.Username).IsUnique(true);
         }
     }
 }
