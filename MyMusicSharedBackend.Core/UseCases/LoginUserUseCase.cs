@@ -62,7 +62,7 @@ namespace MyMusicSharedBackend.Core.UseCases
                     return false;
                 }
 
-                if (!user.Result.Validate(message.RequestContent.ToString(), _configuration.GetSection("Security").GetSection("PasswordHashSalt").Value, user.Result.Password))
+                if (!user.Result.ValidatePassword(message.RequestContent.ToString(), _configuration.GetSection("Security").GetSection("PasswordHashSalt").Value, user.Result.Password))
                 {
                     outputPort.Handle(new UseCaseResponse<TokenDto>("Invalid login.", new List<string> { "Invalid login." }));
                     return false;

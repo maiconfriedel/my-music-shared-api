@@ -59,7 +59,7 @@ namespace MyMusicSharedBackend.Core.Domain
         /// <param name="salt">Salt to validate</param>
         /// <param name="hash">Hashed value</param>
         /// <returns>True or false</returns>
-        public bool Validate(string value, string salt, string hash) => HashPassword(value, salt) == hash;
+        public bool ValidatePassword(string value, string salt, string hash) => HashPassword(value, salt) == hash;
 
         /// <summary>
         /// User Identifier
