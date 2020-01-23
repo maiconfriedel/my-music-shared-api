@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MyMusicSharedBackend.Database;
+using MyMusicSharedBackend.Infrastructure.EntityFramework;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace MyMusicSharedBackend.Migrations
+namespace MyMusicSharedBackend.Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(MyMusicSharedDbContext))]
-    [Migration("20200122203212_UsernameAndScopesRefreshToken")]
-    partial class UsernameAndScopesRefreshToken
+    [Migration("20200122202848_RefreshToken")]
+    partial class RefreshToken
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,12 +29,6 @@ namespace MyMusicSharedBackend.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("RefreshTokenValue")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Scopes")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Username")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("ValidUntil")

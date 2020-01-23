@@ -13,28 +13,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200122142000_Password.cs" />
-    <Compile Remove="Migrations\20200122142000_Password.Designer.cs" />
-    <Compile Remove="Migrations\20200122203109_UsernameRefreshToken.cs" />
-    <Compile Remove="Migrations\20200122203109_UsernameRefreshToken.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.6.0" />
   </ItemGroup>
 
-
+  <ItemGroup>
+    <ProjectReference Include="..\MyMusicSharedBackend.Core\MyMusicSharedBackend.Core.csproj" />
+    <ProjectReference Include="..\MyMusicSharedBackend.Infrastructure\MyMusicSharedBackend.Infrastructure.csproj" />
+  </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MyMusicSharedBackend.Migrations
+namespace MyMusicSharedBackend.Infrastructure.EntityFramework.Migrations
 {
     public partial class UsernameAndScopesRefreshToken : Migration
     {

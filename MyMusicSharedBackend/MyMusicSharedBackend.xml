@@ -9,7 +9,7 @@
             Controller for login
             </summary>
         </member>
-        <member name="M:MyMusicSharedBackend.Controllers.LoginController.#ctor(MyMusicSharedBackend.Database.MyMusicSharedDbContext,MyMusicSharedBackend.Services.TokenService,Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="M:MyMusicSharedBackend.Controllers.LoginController.#ctor(MyMusicSharedBackend.Infrastructure.EntityFramework.MyMusicSharedDbContext,MyMusicSharedBackend.Services.TokenService,Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             Constructor of the class
             </summary>
@@ -17,71 +17,28 @@
             <param name="tokenService">Token service</param>
             <param name="configuration">Configuration properties</param>
         </member>
-        <member name="M:MyMusicSharedBackend.Controllers.LoginController.Login(MyMusicSharedBackend.Models.Login)">
-            <summary>
-            Logins to the application
-            </summary>
-            <param name="login">Login Data</param>
-            <returns>JWT Token</returns>
-        </member>
         <member name="T:MyMusicSharedBackend.Controllers.UsersController">
             <summary>
             Users Controller
             </summary>
         </member>
-        <member name="M:MyMusicSharedBackend.Controllers.UsersController.#ctor(MyMusicSharedBackend.Database.MyMusicSharedDbContext,Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="F:MyMusicSharedBackend.Controllers.UsersController._registerUserUseCase">
             <summary>
-            Constructor of the class
+            Register user use case
             </summary>
-            <param name="context">Db Context</param>
-            <param name="configuration">Configuration file</param>
         </member>
-        <member name="M:MyMusicSharedBackend.Controllers.UsersController.GetUsers">
+        <member name="M:MyMusicSharedBackend.Controllers.UsersController.#ctor(MyMusicSharedBackend.Core.Interfaces.UseCases.IRegisterUserUseCase)">
             <summary>
-            Get all users
+            Constructor
             </summary>
-            <returns>List of all users</returns>
-        </member>
-        <member name="M:MyMusicSharedBackend.Controllers.UsersController.GetUser(System.Int32)">
-            <summary>
-            Get user by Id
-            </summary>
-            <param name="id">User identifier</param>
-            <returns>Details of an user</returns>
+            <param name="registerUserUseCase">Register user use case</param>
         </member>
         <member name="M:MyMusicSharedBackend.Controllers.UsersController.PostUser(MyMusicSharedBackend.Models.User)">
             <summary>
             Create a user
             </summary>
             <param name="user">User data</param>
-            <returns>The created user</returns>
-        </member>
-        <member name="T:MyMusicSharedBackend.Database.MyMusicSharedDbContext">
-            <summary>
-            Db Context for Database Access
-            </summary>
-        </member>
-        <member name="P:MyMusicSharedBackend.Database.MyMusicSharedDbContext.Users">
-            <summary>
-            Users DbSet
-            </summary>
-        </member>
-        <member name="P:MyMusicSharedBackend.Database.MyMusicSharedDbContext.RefreshTokens">
-            <summary>
-            Refresh tokens
-            </summary>
-        </member>
-        <member name="M:MyMusicSharedBackend.Database.MyMusicSharedDbContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)">
-            <summary>
-            Method called on configuring the Db Context
-            </summary>
-            <param name="optionsBuilder">Options</param>
-        </member>
-        <member name="M:MyMusicSharedBackend.Database.MyMusicSharedDbContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <summary>
-            Method called on creating the models
-            </summary>
-            <param name="modelBuilder">Model builder</param>
+            <returns>The created user Id</returns>
         </member>
         <member name="T:MyMusicSharedBackend.Models.Login">
             <summary>
@@ -211,6 +168,137 @@
             ToString of the class
             </summary>
             <returns>String</returns>
+        </member>
+        <member name="T:MyMusicSharedBackend.Presenters.DeletePresenter`1">
+            <summary>
+            Object responsible for formatting the presentation of the return of the use case in DELETE methods
+            </summary>
+            <typeparam name="TResult">Use case result type</typeparam>
+        </member>
+        <member name="M:MyMusicSharedBackend.Presenters.DeletePresenter`1.#ctor">
+            <summary>
+            Class constructor
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Presenters.DeletePresenter`1.ContentResult">
+            <summary>
+            Presentation content
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Presenters.DeletePresenter`1.Handle(MyMusicSharedBackend.Core.Dto.UseCaseResponses.UseCaseResponse{`0})">
+            <summary>
+            Handles the result of the use case and prepares the presentation
+            </summary>
+            <param name="response">Result of the use case</param>
+        </member>
+        <member name="T:MyMusicSharedBackend.Presenters.GetPresenter`2">
+            <summary>
+            Object responsible for formatting the presentation of the return of the use case in GET methods
+            </summary>
+            <typeparam name="TResult">Use case result type</typeparam>
+            <typeparam name="TModel">Presentation template type</typeparam>
+        </member>
+        <member name="F:MyMusicSharedBackend.Presenters.GetPresenter`2._mapper">
+            <summary>
+            AutoMapper instance
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Presenters.GetPresenter`2.#ctor(AutoMapper.IMapper)">
+            <summary>
+            Class constructor
+            </summary>
+            <param name="mapper">AutoMapper instance</param>
+        </member>
+        <member name="P:MyMusicSharedBackend.Presenters.GetPresenter`2.ContentResult">
+            <summary>
+            Presentation content
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Presenters.GetPresenter`2.Handle(MyMusicSharedBackend.Core.Dto.UseCaseResponses.UseCaseResponse{`0})">
+            <summary>
+            Handles the result of the use case and prepares the presentation
+            </summary>
+            <param name="response">Result of the use case</param>
+        </member>
+        <member name="T:MyMusicSharedBackend.Presenters.JsonContentResult">
+            <summary>
+            JSON Content Type
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Presenters.JsonContentResult.#ctor">
+            <summary>
+            Class constructor
+            </summary>
+        </member>
+        <member name="T:MyMusicSharedBackend.Presenters.PostPresenter`1">
+            <summary>
+            Object responsible for formatting the presentation of the return of the use case in POST methods
+            </summary>
+            <typeparam name="TResult">Tipo do resultado do caso de uso</typeparam>
+        </member>
+        <member name="M:MyMusicSharedBackend.Presenters.PostPresenter`1.#ctor">
+            <summary>
+            Class constructor
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Presenters.PostPresenter`1.ContentResult">
+            <summary>
+            Presentation content
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Presenters.PostPresenter`1.Handle(MyMusicSharedBackend.Core.Dto.UseCaseResponses.UseCaseResponse{`0})">
+            <summary>
+            Handles the result of the use case and prepares the presentation
+            </summary>
+            <param name="response">Result of the use case</param>
+        </member>
+        <member name="T:MyMusicSharedBackend.Presenters.PostResponseModel`1">
+            <summary>
+            POST Method Response
+            </summary>
+            <typeparam name="TResult">Result Type</typeparam>
+        </member>
+        <member name="P:MyMusicSharedBackend.Presenters.PostResponseModel`1.Errors">
+            <summary>
+            Error Messages
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Presenters.PostResponseModel`1.Id">
+            <summary>
+            Identifier of the created entity
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Presenters.PostResponseModel`1.Message">
+            <summary>
+            Friendly message to present to the user in case of error
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Presenters.PostResponseModel`1.Success">
+            <summary>
+            Operation status
+            </summary>
+        </member>
+        <member name="T:MyMusicSharedBackend.Presenters.PutPresenter`1">
+            <summary>
+            Object responsible for formatting the presentation of the return of the use case in POST methods
+            </summary>
+            <typeparam name="TResult">Tipo do resultado do caso de uso</typeparam>
+        </member>
+        <member name="M:MyMusicSharedBackend.Presenters.PutPresenter`1.#ctor">
+            <summary>
+            Class constructor
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Presenters.PutPresenter`1.ContentResult">
+            <summary>
+            Presentation content
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Presenters.PutPresenter`1.Handle(MyMusicSharedBackend.Core.Dto.UseCaseResponses.UseCaseResponse{`0})">
+            <summary>
+            Handles the result of the use case and prepares the presentation
+            </summary>
+            <param name="response">Result of the use case</param>
         </member>
         <member name="T:MyMusicSharedBackend.Program">
             <summary>

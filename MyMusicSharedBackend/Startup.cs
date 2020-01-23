@@ -1,17 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MyMusicSharedBackend.Core;
+using MyMusicSharedBackend.Infrastructure;
 using MyMusicSharedBackend.Services;
 
 namespace MyMusicSharedBackend
@@ -41,6 +48,17 @@ namespace MyMusicSharedBackend
         /// <param name="services">Services to add to the container</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                builder =>
+                {
+                    builder.AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                });
+            });
+
             services.AddControllers();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
@@ -95,8 +113,13 @@ namespace MyMusicSharedBackend
                 };
             });
 
-            services.AddDbContext<Database.MyMusicSharedDbContext>();
+            // add the Infrastructure and Core layers services
+            services.AddMyMusicSharedBackendCore();
+            services.AddMyMusicSharedBackendInfrastructure();
+
             services.AddSingleton<TokenService>();
+
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
 
         /// <summary>
@@ -110,6 +133,45 @@ namespace MyMusicSharedBackend
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors();
+
+            _ = app.UseExceptionHandler(
+               builder =>
+               {
+                   builder.Run(
+                   async context =>
+                   {
+                       context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                       context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                       context.Response.Headers.Add("Content-Type", "application/json");
+
+                       var error = context.Features.Get<IExceptionHandlerFeature>();
+
+                       if (error != null)
+                       {
+                           var exception = error.Error;
+
+                           List<string> errors = new List<string>();
+
+                           errors.Add(exception.Message);
+                           while (exception.InnerException != null)
+                           {
+                               exception = exception.InnerException;
+                               errors.Add(exception.Message);
+                           }
+
+                           var response = new
+                           {
+                               Success = false,
+                               Message = "Erro interno",
+                               Errors = errors
+                           };
+
+                           await context.Response.WriteAsync(JsonSerializer.Serialize(response)).ConfigureAwait(false);
+                       }
+                   });
+               });
 
             app.UseHttpsRedirection();
 

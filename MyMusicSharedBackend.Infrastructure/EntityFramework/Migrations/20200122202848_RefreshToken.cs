@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace MyMusicSharedBackend.Migrations
+namespace MyMusicSharedBackend.Infrastructure.EntityFramework.Migrations
 {
     public partial class RefreshToken : Migration
     {

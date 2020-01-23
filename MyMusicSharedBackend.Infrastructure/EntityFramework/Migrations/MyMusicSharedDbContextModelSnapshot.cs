@@ -3,10 +3,10 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MyMusicSharedBackend.Database;
+using MyMusicSharedBackend.Infrastructure.EntityFramework;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace MyMusicSharedBackend.Migrations
+namespace MyMusicSharedBackend.Infrastructure.Migrations
 {
     [DbContext(typeof(MyMusicSharedDbContext))]
     partial class MyMusicSharedDbContextModelSnapshot : ModelSnapshot

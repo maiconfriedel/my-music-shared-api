@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using MyMusicSharedBackend.Database;
 using MyMusicSharedBackend.Models;
 using System.Linq;
+using MyMusicSharedBackend.Infrastructure.EntityFramework;
+using MyMusicSharedBackend.Core.Interfaces.UseCases;
+using MyMusicSharedBackend.Presenters;
 
 namespace MyMusicSharedBackend.Controllers
 {
@@ -17,67 +19,64 @@ namespace MyMusicSharedBackend.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly MyMusicSharedDbContext _context;
-
-        private readonly IConfiguration _configuration;
+        /// <summary>
+        /// Register user use case
+        /// </summary>
+        private readonly IRegisterUserUseCase _registerUserUseCase;
 
         /// <summary>
-        /// Constructor of the class
+        /// Constructor
         /// </summary>
-        /// <param name="context">Db Context</param>
-        /// <param name="configuration">Configuration file</param>
-        public UsersController(MyMusicSharedDbContext context, IConfiguration configuration)
+        /// <param name="registerUserUseCase">Register user use case</param>
+        public UsersController(IRegisterUserUseCase registerUserUseCase)
         {
-            _context = context;
-            _configuration = configuration;
+            _registerUserUseCase = registerUserUseCase;
         }
 
-        /// <summary>
-        /// Get all users
-        /// </summary>
-        /// <returns>List of all users</returns>
-        [HttpGet]
-        [Authorize(policy: "users.read")]
-        public IEnumerable<object> GetUsers()
-        {
-            return _context.Users.ToList().Select(a => new { a.Id, a.Email, a.Username });
-        }
+        ///// <summary>
+        ///// Get all users
+        ///// </summary>
+        ///// <returns>List of all users</returns>
+        //[HttpGet]
+        //[Authorize(policy: "users.read")]
+        //public IEnumerable<object> GetUsers()
+        //{
+        //    return _context.Users.ToList().Select(a => new { a.Id, a.Email, a.Username });
+        //}
 
-        /// <summary>
-        /// Get user by Id
-        /// </summary>
-        /// <param name="id">User identifier</param>
-        /// <returns>Details of an user</returns>
-        [HttpGet("{id}")]
-        [Authorize(policy: "users.read")]
-        public async Task<ActionResult<User>> GetUser(int id)
-        {
-            var user = await _context.Users.FindAsync(id);
+        ///// <summary>
+        ///// Get user by Id
+        ///// </summary>
+        ///// <param name="id">User identifier</param>
+        ///// <returns>Details of an user</returns>
+        //[HttpGet("{id}")]
+        //[Authorize(policy: "users.read")]
+        //public async Task<ActionResult<User>> GetUser(int id)
+        //{
+        //    var user = await _context.Users.FindAsync(id);
 
-            if (user == null)
-            {
-                return NotFound();
-            }
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return user;
-        }
+        //    return user;
+        //}
 
         /// <summary>
         /// Create a user
         /// </summary>
         /// <param name="user">User data</param>
-        /// <returns>The created user</returns>
+        /// <returns>The created user Id</returns>
         [HttpPost]
         //[Authorize(policy: "write")]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<int>> PostUser(User user)
         {
-            string salt = _configuration.GetSection("Security").GetSection("PasswordHashSalt").Value;
-            user.Password = Models.Password.Hash.Create(user.ToString(), salt);
+            PostPresenter<int> postPresenter = new PostPresenter<int>();
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            _ = await _registerUserUseCase.HandleAsync(new Core.Dto.UseCaseRequests.UseCaseRequest<Core.Dto.UserDto, Core.Dto.UseCaseResponses.UseCaseResponse<int>>(new Core.Dto.UserDto(user.Email, user.Username, user.Password, user.FullName, user.Bio)), postPresenter).ConfigureAwait(false);
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            return postPresenter.ContentResult;
         }
     }
 }

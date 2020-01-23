@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MyMusicSharedBackend.Database;
+using MyMusicSharedBackend.Infrastructure.EntityFramework;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace MyMusicSharedBackend.Migrations
+namespace MyMusicSharedBackend.Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(MyMusicSharedDbContext))]
     [Migration("20200122142159_PasswordAndRequiredFields")]

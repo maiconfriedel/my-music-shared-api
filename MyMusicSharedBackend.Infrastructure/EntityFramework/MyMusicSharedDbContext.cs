@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyMusicSharedBackend.Models;
+using MyMusicSharedBackend.Infrastructure.EntityFramework.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MyMusicSharedBackend.Database
+namespace MyMusicSharedBackend.Infrastructure.EntityFramework
 {
     /// <summary>
     /// Db Context for Database Access
@@ -37,7 +37,7 @@ namespace MyMusicSharedBackend.Database
         /// <param name="modelBuilder">Model builder</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Models.User>().HasIndex(p => p.Email).IsUnique(true);
+            modelBuilder.Entity<User>().HasIndex(p => p.Email).IsUnique(true);
         }
     }
 }
