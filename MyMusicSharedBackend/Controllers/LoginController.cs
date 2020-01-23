@@ -47,22 +47,41 @@ namespace MyMusicSharedBackend.Controllers
             {
                 var refreshTokenData = await _context.RefreshTokens.FirstOrDefaultAsync(a => a.RefreshTokenValue == login.RefreshToken);
 
-                var userToken = await _context.Users.FirstOrDefaultAsync(a => a.Username == refreshTokenData.Username);
+                if (refreshTokenData == null)
+                {
+                    return BadRequest(new { error = "Invalid login" });
+                }
 
-                var tokenRefreshed = _tokenService.GenerateToken(userToken, refreshTokenData.Scopes.Split(" "));
+                if (!refreshTokenData.IsValid)
+                {
+                    _context.RefreshTokens.Remove(refreshTokenData);
+                    await _context.SaveChangesAsync();
+                    return BadRequest(new { error = "Invalid login" });
+                }
 
-                string newRefreshToken = Guid.NewGuid().ToString("N");
+                var user = await _context.Users.FirstOrDefaultAsync(a => a.Username == refreshTokenData.Username);
 
-                _context.RefreshTokens.Add(new RefreshToken { ValidUntil = DateTime.Now.AddDays(1), RefreshTokenValue = newRefreshToken, Username = refreshTokenData.Username, Scopes = refreshTokenData.Scopes });
+                if(user == null)
+                {
+                    return BadRequest(new { error = "Invalid user" });
+                }
+
+                var token = _tokenService.GenerateToken(user, refreshTokenData.Scopes.Split(" "));
+
+                string refreshToken = Guid.NewGuid().ToString("N");
+
+                _context.RefreshTokens.Add(new RefreshToken { ValidUntil = DateTime.Now.AddDays(1), RefreshTokenValue = refreshToken, Username = refreshTokenData.Username, Scopes = refreshTokenData.Scopes });
                 _context.RefreshTokens.Remove(refreshTokenData);
                 await _context.SaveChangesAsync();
 
-                return new { token = tokenRefreshed, refreshToken = newRefreshToken };
+                return new { type = "Bearer", token, refreshToken };
             }
             else
             {
                 string salt = _configuration.GetSection("Security").GetSection("PasswordHashSalt").Value;
+                
                 var user = await _context.Users.FirstOrDefaultAsync(a => a.Username == login.Username);
+                
                 if (user == null)
                 {
                     return BadRequest(new { error = "Invalid login" });
@@ -82,7 +101,7 @@ namespace MyMusicSharedBackend.Controllers
                 _context.RefreshTokens.Add(new RefreshToken { ValidUntil = DateTime.Now.AddDays(1), RefreshTokenValue = refreshToken, Username = login.Username, Scopes = string.Join(" ", login.Scopes) });
                 await _context.SaveChangesAsync();
 
-                return new { token, refreshToken };
+                return new { type = "Bearer", token, refreshToken };
             }
         }
     }
