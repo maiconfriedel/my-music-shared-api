@@ -9,13 +9,18 @@
             Controller for login
             </summary>
         </member>
-        <member name="M:MyMusicSharedBackend.Controllers.LoginController.#ctor(MyMusicSharedBackend.Infrastructure.EntityFramework.MyMusicSharedDbContext,MyMusicSharedBackend.Services.TokenService,Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="M:MyMusicSharedBackend.Controllers.LoginController.#ctor(MyMusicSharedBackend.Core.Interfaces.UseCases.ILoginUserUseCase)">
             <summary>
-            Constructor of the class
+            Class constructor
             </summary>
-            <param name="context">Db Context</param>
-            <param name="tokenService">Token service</param>
-            <param name="configuration">Configuration properties</param>
+            <param name="loginUserUseCase">Use Case to login</param>
+        </member>
+        <member name="M:MyMusicSharedBackend.Controllers.LoginController.Login(MyMusicSharedBackend.Models.Login)">
+            <summary>
+            Logins to the application
+            </summary>
+            <param name="login">Login Data</param>
+            <returns>JWT Token</returns>
         </member>
         <member name="T:MyMusicSharedBackend.Controllers.UsersController">
             <summary>
@@ -128,6 +133,39 @@
             The refresh token stills valid
             </summary>
         </member>
+        <member name="T:MyMusicSharedBackend.Models.Token">
+            <summary>
+            Token Data
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Models.Token.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Constructor with values
+            </summary>
+            <param name="type"></param>
+            <param name="accessToken"></param>
+            <param name="refreshToken"></param>
+        </member>
+        <member name="M:MyMusicSharedBackend.Models.Token.#ctor">
+            <summary>
+            Empty constructor with default values
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Models.Token.Type">
+            <summary>
+            Token Type
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Models.Token.AccessToken">
+            <summary>
+            The token itself
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Models.Token.RefreshToken">
+            <summary>
+            Token to authenticate without passing user and password again
+            </summary>
+        </member>
         <member name="T:MyMusicSharedBackend.Models.User">
             <summary>
             User Data
@@ -230,6 +268,27 @@
             Class constructor
             </summary>
         </member>
+        <member name="T:MyMusicSharedBackend.Presenters.LoginUserPresenter">
+            <summary>
+            Presents the token for the API in JSON Format
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Presenters.LoginUserPresenter.#ctor">
+            <summary>
+            Class constructor
+            </summary>
+        </member>
+        <member name="P:MyMusicSharedBackend.Presenters.LoginUserPresenter.ContentResult">
+            <summary>
+            Presentation content
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Presenters.LoginUserPresenter.Handle(MyMusicSharedBackend.Core.Dto.UseCaseResponses.UseCaseResponse{MyMusicSharedBackend.Core.Dto.TokenDto})">
+            <summary>
+            Handles the result of the use case and prepares the presentation
+            </summary>
+            <param name="response">Result of the use case</param>
+        </member>
         <member name="T:MyMusicSharedBackend.Presenters.PostPresenter`1">
             <summary>
             Object responsible for formatting the presentation of the return of the use case in POST methods
@@ -317,25 +376,6 @@
             </summary>
             <param name="args">Arguments</param>
             <returns>Host Builder</returns>
-        </member>
-        <member name="T:MyMusicSharedBackend.Services.TokenService">
-            <summary>
-            Token methods
-            </summary>
-        </member>
-        <member name="M:MyMusicSharedBackend.Services.TokenService.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
-            <summary>
-            Constructor of the class
-            </summary>
-            <param name="configuration">Configuration properties</param>
-        </member>
-        <member name="M:MyMusicSharedBackend.Services.TokenService.GenerateToken(MyMusicSharedBackend.Models.User,System.Collections.Generic.IEnumerable{System.String})">
-            <summary>
-            Generates a token
-            </summary>
-            <param name="user">User data</param>
-            <param name="scopes">Scopes for the token</param>
-            <returns>JWT Token</returns>
         </member>
         <member name="T:MyMusicSharedBackend.Startup">
             <summary>

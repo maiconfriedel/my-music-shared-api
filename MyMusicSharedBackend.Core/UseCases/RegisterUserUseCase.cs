@@ -1,7 +1,9 @@
-﻿using MyMusicSharedBackend.Core.Dto;
+﻿using Microsoft.Extensions.Configuration;
+using MyMusicSharedBackend.Core.Dto;
 using MyMusicSharedBackend.Core.Dto.UseCaseRequests;
 using MyMusicSharedBackend.Core.Dto.UseCaseResponses;
 using MyMusicSharedBackend.Core.Interfaces;
+using MyMusicSharedBackend.Core.Interfaces.Gateways;
 using MyMusicSharedBackend.Core.Interfaces.UseCases;
 using System;
 using System.Collections.Generic;
@@ -15,15 +17,46 @@ namespace MyMusicSharedBackend.Core.UseCases
     /// </summary>
     internal class RegisterUserUseCase : IRegisterUserUseCase
     {
+        private readonly IUserRepository _userRepository;
+        private readonly IConfiguration _configuration;
+
+        /// <summary>
+        /// Constructor of the class
+        /// </summary>
+        /// <param name="userRepository">User repository</param>
+        public RegisterUserUseCase(IUserRepository userRepository, IConfiguration configuration)
+        {
+            _userRepository = userRepository;
+            _configuration = configuration;
+        }
+
         /// <summary>
         /// Handles the use case
         /// </summary>
         /// <param name="message">Parameters for the execution</param>
         /// <param name="outputPort">Object that will handle the use case response</param>
         /// <returns>Operation Status</returns>
-        public Task<bool> HandleAsync(UseCaseRequest<UserDto, UseCaseResponse<int>> message, IOutputPort<UseCaseResponse<int>> outputPort)
+        public async Task<bool> HandleAsync(UseCaseRequest<UserDto, UseCaseResponse<int>> message, IOutputPort<UseCaseResponse<int>> outputPort)
         {
-            throw new NotImplementedException();
+            // creates a new User Domain instance
+            Domain.User userCreate = new Domain.User(message.RequestContent.Email, message.RequestContent.Username, message.RequestContent.Password, message.RequestContent.FullName, message.RequestContent.Bio);
+
+            // hashes the password
+            userCreate.Password = userCreate.HashPassword(userCreate.ToString(), _configuration.GetSection("Security").GetSection("PasswordHashSalt").Value);
+
+            // creates in the database and returns the result
+            var createdUser = await _userRepository.CreateUserAsync(userCreate);
+
+            if (createdUser.Success)
+            {
+                outputPort.Handle(new UseCaseResponse<int>(createdUser.Result));
+                return true;
+            }
+            else
+            {
+                outputPort.Handle(new UseCaseResponse<int>(createdUser.Message, createdUser.Errors));
+                return false;
+            }
         }
     }
 }

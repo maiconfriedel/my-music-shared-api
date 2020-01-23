@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MyMusicSharedBackend.Core.Interfaces.UseCases;
 using MyMusicSharedBackend.Core.UseCases;
+using MyMusicSharedBackend.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,6 +21,8 @@ namespace MyMusicSharedBackend.Core
         public static IServiceCollection AddMyMusicSharedBackendCore(this IServiceCollection services)
         {
             services.AddTransient<IRegisterUserUseCase, RegisterUserUseCase>();
+            services.AddTransient<ILoginUserUseCase, LoginUserUseCase>();
+            services.AddSingleton<TokenService>();
 
             return services;
         }

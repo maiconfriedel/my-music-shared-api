@@ -117,8 +117,6 @@ namespace MyMusicSharedBackend
             services.AddMyMusicSharedBackendCore();
             services.AddMyMusicSharedBackendInfrastructure();
 
-            services.AddSingleton<TokenService>();
-
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
 

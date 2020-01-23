@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using MyMusicSharedBackend.Core.Interfaces.Gateways;
 using MyMusicSharedBackend.Infrastructure.EntityFramework;
+using MyMusicSharedBackend.Infrastructure.Repositories;
 
 namespace MyMusicSharedBackend.Infrastructure
 {
@@ -16,6 +18,8 @@ namespace MyMusicSharedBackend.Infrastructure
         public static IServiceCollection AddMyMusicSharedBackendInfrastructure(this IServiceCollection services)
         {
             services.AddDbContext<MyMusicSharedDbContext>();
+
+            services.AddTransient<IUserRepository, UserRepository>();
 
             return services;
         }
