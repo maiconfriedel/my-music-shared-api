@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MyMusicSharedBackend.Database;
 using MyMusicSharedBackend.Models;
+using System.Linq;
 
 namespace MyMusicSharedBackend.Controllers
 {
@@ -36,10 +37,10 @@ namespace MyMusicSharedBackend.Controllers
         /// </summary>
         /// <returns>List of all users</returns>
         [HttpGet]
-        [Authorize(policy: "read")]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        [Authorize(policy: "users.read")]
+        public IEnumerable<object> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            return _context.Users.ToList().Select(a => new { a.Id, a.Email, a.Username });
         }
 
         /// <summary>
@@ -48,7 +49,7 @@ namespace MyMusicSharedBackend.Controllers
         /// <param name="id">User identifier</param>
         /// <returns>Details of an user</returns>
         [HttpGet("{id}")]
-        [Authorize(policy: "read")]
+        [Authorize(policy: "users.read")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
             var user = await _context.Users.FindAsync(id);

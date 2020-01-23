@@ -67,11 +67,8 @@ namespace MyMusicSharedBackend
             //Registrar as politicas de acesso
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("read",
-                    policy => policy.Requirements.Add(new HasScopeRequirement("read", "MyMusicShared")));
-
-                options.AddPolicy("write",
-                    policy => policy.Requirements.Add(new HasScopeRequirement("write", "MyMusicShared")));
+                options.AddPolicy("users.read",
+                    policy => policy.Requirements.Add(new HasScopeRequirement("users.read", "MyMusicShared")));
             });
 
             // register the scope authorization handler
