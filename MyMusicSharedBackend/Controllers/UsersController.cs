@@ -9,6 +9,8 @@ using System.Linq;
 using MyMusicSharedBackend.Infrastructure.EntityFramework;
 using MyMusicSharedBackend.Core.Interfaces.UseCases;
 using MyMusicSharedBackend.Presenters;
+using MyMusicSharedBackend.Core.Dto;
+using AutoMapper;
 
 namespace MyMusicSharedBackend.Controllers
 {
@@ -25,24 +27,41 @@ namespace MyMusicSharedBackend.Controllers
         private readonly IRegisterUserUseCase _registerUserUseCase;
 
         /// <summary>
+        /// Search users use case
+        /// </summary>
+        private readonly ISearchUsersUseCase _searchUsersUseCase;
+
+        /// <summary>
+        /// AutoMapper
+        /// </summary>
+        private readonly IMapper _mapper;
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="registerUserUseCase">Register user use case</param>
-        public UsersController(IRegisterUserUseCase registerUserUseCase)
+        /// <param name="searchUsersUseCase">Search users use case</param>
+        /// <param name="mapper">AutoMapper</param>
+        public UsersController(IRegisterUserUseCase registerUserUseCase, ISearchUsersUseCase searchUsersUseCase, IMapper mapper)
         {
             _registerUserUseCase = registerUserUseCase;
+            _searchUsersUseCase = searchUsersUseCase;
+            _mapper = mapper;
         }
 
-        ///// <summary>
-        ///// Get all users
-        ///// </summary>
-        ///// <returns>List of all users</returns>
-        //[HttpGet]
-        //[Authorize(policy: "users.read")]
-        //public IEnumerable<object> GetUsers()
-        //{
-        //    return _context.Users.ToList().Select(a => new { a.Id, a.Email, a.Username });
-        //}
+        /// <summary>
+        /// Get all users
+        /// </summary>
+        /// <returns>List of all users</returns>
+        [HttpGet]
+        [Authorize(policy: "users.read")]
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        {
+            GetPresenter<IEnumerable<UserDto>, IEnumerable<User>> getPresenter = new GetPresenter<IEnumerable<UserDto>, IEnumerable<User>>(_mapper);
+
+            _ = await _searchUsersUseCase.HandleAsync(new Core.Dto.UseCaseRequests.UseCaseRequest<bool, Core.Dto.UseCaseResponses.UseCaseResponse<IEnumerable<UserDto>>>(false), getPresenter);
+            return getPresenter.ContentResult;
+        }
 
         ///// <summary>
         ///// Get user by Id
@@ -69,14 +88,14 @@ namespace MyMusicSharedBackend.Controllers
         /// <param name="user">User data</param>
         /// <returns>The created user Id</returns>
         [HttpPost]
-        [Authorize(policy: "users.read")]
+        [Authorize(policy: "users.write")]
         public async Task<ActionResult<int>> PostUser(User user)
         {
             PostPresenter<int> postPresenter = new PostPresenter<int>();
 
             var userLoggedIn = User;
 
-            _ = await _registerUserUseCase.HandleAsync(new Core.Dto.UseCaseRequests.UseCaseRequest<Core.Dto.UserDto, Core.Dto.UseCaseResponses.UseCaseResponse<int>>(new Core.Dto.UserDto(user.Email, user.Username, user.Password, user.FullName, user.Bio)), postPresenter).ConfigureAwait(false);
+            _ = await _registerUserUseCase.HandleAsync(new Core.Dto.UseCaseRequests.UseCaseRequest<Core.Dto.UserDto, Core.Dto.UseCaseResponses.UseCaseResponse<int>>(new Core.Dto.UserDto(0, user.Email, user.Username, user.Password, user.FullName, user.Bio)), postPresenter).ConfigureAwait(false);
 
             return postPresenter.ContentResult;
         }

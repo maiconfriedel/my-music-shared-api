@@ -38,8 +38,10 @@ namespace MyMusicSharedBackend.Core.UseCases
         /// <returns>Operation Status</returns>
         public async Task<bool> HandleAsync(UseCaseRequest<UserDto, UseCaseResponse<int>> message, IOutputPort<UseCaseResponse<int>> outputPort)
         {
+            //TODO - Validate user by username and email to see if already exists
+
             // creates a new User Domain instance
-            Domain.User userCreate = new Domain.User(message.RequestContent.Email, message.RequestContent.Username, message.RequestContent.Password, message.RequestContent.FullName, message.RequestContent.Bio);
+            Domain.User userCreate = new Domain.User(0, message.RequestContent.Email, message.RequestContent.Username, message.RequestContent.Password, message.RequestContent.FullName, message.RequestContent.Bio);
 
             // hashes the password
             userCreate.Password = userCreate.HashPassword(userCreate.ToString(), _configuration.GetSection("Security").GetSection("PasswordHashSalt").Value);

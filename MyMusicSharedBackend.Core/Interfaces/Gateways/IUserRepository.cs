@@ -25,5 +25,11 @@ namespace MyMusicSharedBackend.Core.Interfaces.Gateways
         /// <param name="username">Username to search</param>
         /// <returns>User data</returns>
         Task<GatewayResponse<User>> GetUserByUsername(string username);
+
+        /// <summary>
+        /// Search all users
+        /// </summary>
+        /// <returns>List of users</returns>
+        Task<GatewayResponse<IEnumerable<User>>> SearchUsers();
     }
 }

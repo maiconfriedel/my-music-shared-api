@@ -88,6 +88,9 @@ namespace MyMusicSharedBackend
             {
                 options.AddPolicy("users.read",
                     policy => policy.Requirements.Add(new HasScopeRequirement("users.read", "MyMusicShared")));
+
+                options.AddPolicy("users.write",
+                    policy => policy.Requirements.Add(new HasScopeRequirement("users.write", "MyMusicShared")));
             });
 
             // register the scope authorization handler

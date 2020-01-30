@@ -3,6 +3,7 @@ using MyMusicSharedBackend.Core.Domain;
 using MyMusicSharedBackend.Core.Dto.GatewayResponses;
 using MyMusicSharedBackend.Core.Interfaces.Gateways;
 using MyMusicSharedBackend.Infrastructure.EntityFramework;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -53,7 +54,18 @@ namespace MyMusicSharedBackend.Infrastructure.Repositories
                 return new GatewayResponse<User>(null);
             }
 
-            return new GatewayResponse<User>(new User(user.Email, user.Username, user.Password, user.FullName, user.Bio));
+            return new GatewayResponse<User>(new User(user.Id, user.Email, user.Username, user.Password, user.FullName, user.Bio));
+        }
+
+        /// <summary>
+        /// Search all users
+        /// </summary>
+        /// <returns>List of users</returns>
+        public async Task<GatewayResponse<IEnumerable<User>>> SearchUsers()
+        {
+            var users = await _mySharedMusicDbContext.Users.ToArrayAsync();
+
+            return new GatewayResponse<IEnumerable<User>>(users.Select(a => new User(a.Id, a.Email, a.Username, null, a.FullName, a.Bio)).ToArray());
         }
     }
 }

@@ -20,13 +20,15 @@ namespace MyMusicSharedBackend.Core.Domain
         /// <summary>
         /// Constructor with defined values
         /// </summary>
+        /// <param name="id">Identifier of the user</param>
         /// <param name="email">Email of the user</param>
         /// <param name="username">Username for login</param>
         /// <param name="password">Password for login</param>
         /// <param name="fullName">Full Name</param>
         /// <param name="bio">Bio of the user</param>
-        public User(string email, string username, string password, string fullName, string bio)
+        public User(int id, string email, string username, string password, string fullName, string bio)
         {
+            Id = id;
             Email = email;
             Username = username;
             Password = password;

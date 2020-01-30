@@ -22,6 +22,7 @@ namespace MyMusicSharedBackend.Core
         {
             services.AddTransient<IRegisterUserUseCase, RegisterUserUseCase>();
             services.AddTransient<ILoginUserUseCase, LoginUserUseCase>();
+            services.AddTransient<ISearchUsersUseCase, SearchUsersUseCase>();
             services.AddTransient<TokenService>();
 
             return services;

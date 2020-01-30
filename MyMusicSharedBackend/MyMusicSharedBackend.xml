@@ -32,11 +32,29 @@
             Register user use case
             </summary>
         </member>
-        <member name="M:MyMusicSharedBackend.Controllers.UsersController.#ctor(MyMusicSharedBackend.Core.Interfaces.UseCases.IRegisterUserUseCase)">
+        <member name="F:MyMusicSharedBackend.Controllers.UsersController._searchUsersUseCase">
+            <summary>
+            Search users use case
+            </summary>
+        </member>
+        <member name="F:MyMusicSharedBackend.Controllers.UsersController._mapper">
+            <summary>
+            AutoMapper
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Controllers.UsersController.#ctor(MyMusicSharedBackend.Core.Interfaces.UseCases.IRegisterUserUseCase,MyMusicSharedBackend.Core.Interfaces.UseCases.ISearchUsersUseCase,AutoMapper.IMapper)">
             <summary>
             Constructor
             </summary>
             <param name="registerUserUseCase">Register user use case</param>
+            <param name="searchUsersUseCase">Search users use case</param>
+            <param name="mapper">AutoMapper</param>
+        </member>
+        <member name="M:MyMusicSharedBackend.Controllers.UsersController.GetUsers">
+            <summary>
+            Get all users
+            </summary>
+            <returns>List of all users</returns>
         </member>
         <member name="M:MyMusicSharedBackend.Controllers.UsersController.PostUser(MyMusicSharedBackend.Models.User)">
             <summary>
@@ -44,6 +62,16 @@
             </summary>
             <param name="user">User data</param>
             <returns>The created user Id</returns>
+        </member>
+        <member name="T:MyMusicSharedBackend.Mapping.UserProfile">
+            <summary>
+            AutoMapper User Profile
+            </summary>
+        </member>
+        <member name="M:MyMusicSharedBackend.Mapping.UserProfile.#ctor">
+            <summary>
+            Constructor that contains the Mapper rules
+            </summary>
         </member>
         <member name="T:MyMusicSharedBackend.Models.Login">
             <summary>
