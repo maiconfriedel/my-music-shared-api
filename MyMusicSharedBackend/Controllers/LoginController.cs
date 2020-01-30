@@ -35,7 +35,7 @@ namespace MyMusicSharedBackend.Controllers
         /// <param name="login">Login Data</param>
         /// <returns>JWT Token</returns>
         [HttpPost]
-        public async Task<ActionResult<Token>> Login([FromBody] Login login)
+        public async Task<ActionResult<Token>> Post([FromBody] Login login)
         {
             LoginUserPresenter presenter = new LoginUserPresenter();
 

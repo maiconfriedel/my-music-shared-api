@@ -55,7 +55,7 @@ namespace MyMusicSharedBackend.Controllers
         /// <returns>List of all users</returns>
         [HttpGet]
         [Authorize(policy: "users.read")]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<User>>> Get()
         {
             GetPresenter<IEnumerable<UserDto>, IEnumerable<User>> getPresenter = new GetPresenter<IEnumerable<UserDto>, IEnumerable<User>>(_mapper);
 
@@ -89,7 +89,7 @@ namespace MyMusicSharedBackend.Controllers
         /// <returns>The created user Id</returns>
         [HttpPost]
         [Authorize(policy: "users.write")]
-        public async Task<ActionResult<int>> PostUser(User user)
+        public async Task<ActionResult<int>> Post(User user)
         {
             PostPresenter<int> postPresenter = new PostPresenter<int>();
 
