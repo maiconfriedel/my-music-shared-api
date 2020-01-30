@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using MyMusicSharedBackend.Core.Interfaces.UseCases;
+using MyMusicSharedBackend.Core.Interfaces.UseCases.User;
 using MyMusicSharedBackend.Infrastructure.EntityFramework;
 using MyMusicSharedBackend.Models;
 using MyMusicSharedBackend.Presenters;

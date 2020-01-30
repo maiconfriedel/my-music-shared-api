@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using MyMusicSharedBackend.Core.Interfaces.UseCases;
-using MyMusicSharedBackend.Core.UseCases;
+using MyMusicSharedBackend.Core.Interfaces.UseCases.User;
+using MyMusicSharedBackend.Core.UseCases.User;
 using MyMusicSharedBackend.Services;
 using System;
 using System.Collections.Generic;

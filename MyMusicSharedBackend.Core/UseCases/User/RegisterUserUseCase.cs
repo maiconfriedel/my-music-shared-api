@@ -4,13 +4,13 @@ using MyMusicSharedBackend.Core.Dto.UseCaseRequests;
 using MyMusicSharedBackend.Core.Dto.UseCaseResponses;
 using MyMusicSharedBackend.Core.Interfaces;
 using MyMusicSharedBackend.Core.Interfaces.Gateways;
-using MyMusicSharedBackend.Core.Interfaces.UseCases;
+using MyMusicSharedBackend.Core.Interfaces.UseCases.User;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyMusicSharedBackend.Core.UseCases
+namespace MyMusicSharedBackend.Core.UseCases.User
 {
     /// <summary>
     /// Registering a User use case

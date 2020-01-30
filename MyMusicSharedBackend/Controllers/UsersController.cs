@@ -7,10 +7,10 @@ using Microsoft.Extensions.Configuration;
 using MyMusicSharedBackend.Models;
 using System.Linq;
 using MyMusicSharedBackend.Infrastructure.EntityFramework;
-using MyMusicSharedBackend.Core.Interfaces.UseCases;
 using MyMusicSharedBackend.Presenters;
 using MyMusicSharedBackend.Core.Dto;
 using AutoMapper;
+using MyMusicSharedBackend.Core.Interfaces.UseCases.User;
 
 namespace MyMusicSharedBackend.Controllers
 {

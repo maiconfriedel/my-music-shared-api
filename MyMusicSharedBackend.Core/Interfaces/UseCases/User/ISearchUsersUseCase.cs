@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyMusicSharedBackend.Core.Interfaces.UseCases
+namespace MyMusicSharedBackend.Core.Interfaces.UseCases.User
 {
     /// <summary>
     /// Interface for search all users use case

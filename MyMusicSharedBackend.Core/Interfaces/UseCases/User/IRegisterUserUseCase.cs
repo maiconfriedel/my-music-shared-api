@@ -5,12 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyMusicSharedBackend.Core.Interfaces.UseCases
+namespace MyMusicSharedBackend.Core.Interfaces.UseCases.User
 {
     /// <summary>
-    /// Interface for login in the application
+    /// Interface for registering a User use case
     /// </summary>
-    public interface ILoginUserUseCase : IUseCaseRequestHandler<UseCaseRequest<LoginDto, UseCaseResponse<TokenDto>>, UseCaseResponse<TokenDto>>
+    public interface IRegisterUserUseCase : IUseCaseRequestHandler<UseCaseRequest<UserDto, UseCaseResponse<int>>, UseCaseResponse<int>>
     {
     }
 }
