@@ -9,7 +9,7 @@
             Controller for login
             </summary>
         </member>
-        <member name="M:MyMusicSharedBackend.Controllers.LoginController.#ctor(MyMusicSharedBackend.Core.Interfaces.UseCases.ILoginUserUseCase)">
+        <member name="M:MyMusicSharedBackend.Controllers.LoginController.#ctor(MyMusicSharedBackend.Core.Interfaces.UseCases.User.ILoginUserUseCase)">
             <summary>
             Class constructor
             </summary>
@@ -42,7 +42,7 @@
             AutoMapper
             </summary>
         </member>
-        <member name="M:MyMusicSharedBackend.Controllers.UsersController.#ctor(MyMusicSharedBackend.Core.Interfaces.UseCases.IRegisterUserUseCase,MyMusicSharedBackend.Core.Interfaces.UseCases.ISearchUsersUseCase,AutoMapper.IMapper)">
+        <member name="M:MyMusicSharedBackend.Controllers.UsersController.#ctor(MyMusicSharedBackend.Core.Interfaces.UseCases.User.IRegisterUserUseCase,MyMusicSharedBackend.Core.Interfaces.UseCases.User.ISearchUsersUseCase,AutoMapper.IMapper)">
             <summary>
             Constructor
             </summary>

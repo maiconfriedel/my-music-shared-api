@@ -35,8 +35,13 @@ namespace MyMusicSharedBackend.Presenters
                 throw new System.ArgumentNullException(nameof(response));
             }
 
+            JsonSerializerOptions serializerOptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
             ContentResult.StatusCode = response.Success ? (int)(HttpStatusCode.Created) : (int)(HttpStatusCode.BadRequest);
-            ContentResult.Content = JsonSerializer.Serialize(new PostResponseModel<TResult> { Id = response.Result, Success = response.Success, Message = response.Message, Errors = response.Errors });
+            ContentResult.Content = JsonSerializer.Serialize(new PostResponseModel<TResult> { Id = response.Result, Success = response.Success, Message = response.Message, Errors = response.Errors }, serializerOptions);
         }
     }
 }

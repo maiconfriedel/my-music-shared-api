@@ -59,7 +59,8 @@ namespace MyMusicSharedBackend.Presenters
 
                     JsonSerializerOptions serializerOptions = new JsonSerializerOptions
                     {
-                        WriteIndented = true
+                        WriteIndented = true,
+                        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                     };
                     serializerOptions.Converters.Add(new JsonStringEnumConverter());
 
@@ -71,7 +72,12 @@ namespace MyMusicSharedBackend.Presenters
             else
             {
                 ContentResult.StatusCode = (int)HttpStatusCode.InternalServerError;
-                ContentResult.Content = JsonSerializer.Serialize(new { response.Success, response.Message, response.Errors });
+                JsonSerializerOptions serializerOptions = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                };
+                ContentResult.Content = JsonSerializer.Serialize(new { response.Success, response.Message, response.Errors }, serializerOptions);
             }
         }
     }

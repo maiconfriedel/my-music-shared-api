@@ -169,7 +169,12 @@ namespace MyMusicSharedBackend
                                Errors = errors
                            };
 
-                           await context.Response.WriteAsync(JsonSerializer.Serialize(response)).ConfigureAwait(false);
+                           JsonSerializerOptions serializerOptions = new JsonSerializerOptions
+                           {
+                               WriteIndented = true,
+                               PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                           };
+                           await context.Response.WriteAsync(JsonSerializer.Serialize(response, serializerOptions)).ConfigureAwait(false);
                        }
                    });
                });

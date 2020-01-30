@@ -35,8 +35,13 @@ namespace MyMusicSharedBackend.Presenters
                 throw new System.ArgumentNullException(nameof(response));
             }
 
+            JsonSerializerOptions serializerOptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
             ContentResult.StatusCode = response.Success ? (int)(HttpStatusCode.OK) : (int)(HttpStatusCode.BadRequest);
-            ContentResult.Content = JsonSerializer.Serialize(new { response.Success, response.Message, response.Errors });
+            ContentResult.Content = JsonSerializer.Serialize(new { response.Success, response.Message, response.Errors }, serializerOptions);
         }
     }
 }
