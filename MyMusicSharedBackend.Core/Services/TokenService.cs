@@ -41,7 +41,7 @@ namespace MyMusicSharedBackend.Services
                 {
                     new Claim(ClaimTypes.Name, user.Username.ToString()),
                     new Claim("email", user.Email.ToString()),
-                    new Claim("scope", string.Join(" ", scopes))
+                    new Claim("scope", string.Join("+", scopes))
                 }),
                 NotBefore = DateTime.Now,
                 Expires = DateTime.Now.AddHours(1),
