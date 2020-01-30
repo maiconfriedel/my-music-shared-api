@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using AutoMapper;
+using KylyOrderPicking.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -187,6 +188,9 @@ namespace MyMusicSharedBackend
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My Music Shared - API - v1");
                 c.RoutePrefix = string.Empty;
             });
+
+            // migrates the database on the start of the application
+            app.MyMusicSharedMigrateDatabase();
 
             app.UseRouting();
             app.UseAuthentication();
