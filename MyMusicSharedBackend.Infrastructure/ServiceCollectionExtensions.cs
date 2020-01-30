@@ -20,6 +20,7 @@ namespace MyMusicSharedBackend.Infrastructure
             services.AddDbContext<MyMusicSharedDbContext>();
 
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ITokenRepository, TokenRepository>();
 
             return services;
         }

@@ -23,6 +23,8 @@ namespace MyMusicSharedBackend.Core.UseCases.User
 
         private readonly IUserRepository _userRepository;
 
+        private readonly ITokenRepository _tokenRepository;
+
         private readonly IConfiguration _configuration;
 
         /// <summary>
@@ -31,10 +33,11 @@ namespace MyMusicSharedBackend.Core.UseCases.User
         /// <param name="tokenService"></param>
         /// <param name="userRepository"></param>
         /// <param name="configuration"></param>
-        public LoginUserUseCase(TokenService tokenService, IUserRepository userRepository, IConfiguration configuration)
+        public LoginUserUseCase(TokenService tokenService, IUserRepository userRepository, IConfiguration configuration, ITokenRepository tokenRepository)
         {
             _tokenService = tokenService;
             _userRepository = userRepository;
+            _tokenRepository = tokenRepository;
             _configuration = configuration;
         }
 
@@ -70,12 +73,39 @@ namespace MyMusicSharedBackend.Core.UseCases.User
 
                 var token = _tokenService.GenerateToken(user.Result, message.RequestContent.Scopes);
 
-                outputPort.Handle(new UseCaseResponse<TokenDto>(new TokenDto("Bearer", token, Guid.NewGuid().ToString("N"))));
+                var refreshToken = await _tokenRepository.CreateRefreshToken(user.Result.Username, message.RequestContent.Scopes);
+
+                outputPort.Handle(new UseCaseResponse<TokenDto>(new TokenDto("Bearer", token, refreshToken.Result)));
                 return true;
             }
             else
             {
-                throw new NotImplementedException();
+                var refreshToken = await _tokenRepository.SearchRefreshToken(message.RequestContent.RefreshToken);
+
+                if (refreshToken.Result == null || !refreshToken.Result.IsValid)
+                {
+                    await _tokenRepository.DeleteRefreshToken(message.RequestContent.RefreshToken);
+
+                    outputPort.Handle(new UseCaseResponse<TokenDto>("Invalid login.", new List<string> { "Invalid refresh token." }));
+                    return false;
+                }
+
+                var user = await _userRepository.GetUserByUsername(refreshToken.Result.Username);
+
+                if (user.Result == null)
+                {
+                    outputPort.Handle(new UseCaseResponse<TokenDto>("Invalid login.", new List<string> { "Invalid login." }));
+                    return false;
+                }
+
+                var token = _tokenService.GenerateToken(user.Result, refreshToken.Result.Scopes.Split("+"));
+
+                var newRefreshToken = await _tokenRepository.CreateRefreshToken(user.Result.Username, refreshToken.Result.Scopes.Split("+"));
+
+                await _tokenRepository.DeleteRefreshToken(message.RequestContent.RefreshToken);
+
+                outputPort.Handle(new UseCaseResponse<TokenDto>(new TokenDto("Bearer", token, newRefreshToken.Result)));
+                return true;
             }
         }
     }

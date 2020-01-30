@@ -15,7 +15,7 @@
             </summary>
             <param name="loginUserUseCase">Use Case to login</param>
         </member>
-        <member name="M:MyMusicSharedBackend.Controllers.LoginController.Login(MyMusicSharedBackend.Models.Login)">
+        <member name="M:MyMusicSharedBackend.Controllers.LoginController.Post(MyMusicSharedBackend.Models.Login)">
             <summary>
             Logins to the application
             </summary>
@@ -50,13 +50,13 @@
             <param name="searchUsersUseCase">Search users use case</param>
             <param name="mapper">AutoMapper</param>
         </member>
-        <member name="M:MyMusicSharedBackend.Controllers.UsersController.GetUsers">
+        <member name="M:MyMusicSharedBackend.Controllers.UsersController.Get">
             <summary>
             Get all users
             </summary>
             <returns>List of all users</returns>
         </member>
-        <member name="M:MyMusicSharedBackend.Controllers.UsersController.PostUser(MyMusicSharedBackend.Models.User)">
+        <member name="M:MyMusicSharedBackend.Controllers.UsersController.Post(MyMusicSharedBackend.Models.User)">
             <summary>
             Create a user
             </summary>
